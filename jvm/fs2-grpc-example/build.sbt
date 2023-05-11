@@ -14,3 +14,7 @@ lazy val client = (project in file("client"))
 lazy val server = (project in file("server"))
   .settings(name := "server")
   .dependsOn(protobuf)
+
+lazy val root = (project in file("."))
+  .settings(publish / skip := true)
+  .aggregate(protobuf, client, server)
