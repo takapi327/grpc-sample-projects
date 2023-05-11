@@ -1,7 +1,6 @@
 
 import io.grpc.*
 import io.grpc.protobuf.services.ProtoReflectionService
-//import io.grpc.netty.NettyServerBuilder
 import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder
 
 import cats.effect.*
