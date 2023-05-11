@@ -4,13 +4,13 @@ ThisBuild / scalaVersion := "3.2.2"
 ThisBuild / startYear    := Some(2023)
 
 lazy val protobuf = (project in file("protobuf"))
-    .settings(name := "protobuf")
-    .enablePlugins(Fs2Grpc)
+  .settings(name := "protobuf")
+  .enablePlugins(Fs2Grpc)
 
 lazy val client = (project in file("client"))
-    .settings(name := "client")
-    .dependsOn(protobuf)
+  .settings(name := "client")
+  .dependsOn(protobuf)
 
 lazy val server = (project in file("server"))
-    .settings(name := "server")
-    .dependsOn(protobuf)
+  .settings(name := "server")
+  .dependsOn(protobuf)
