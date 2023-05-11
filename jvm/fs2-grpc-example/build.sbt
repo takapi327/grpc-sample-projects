@@ -9,10 +9,17 @@ lazy val protobuf = (project in file("protobuf"))
 
 lazy val client = (project in file("client"))
   .settings(name := "client")
+  .settings(libraryDependencies ++= List(
+    "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion
+  ))
   .dependsOn(protobuf)
 
 lazy val server = (project in file("server"))
   .settings(name := "server")
+  .settings(libraryDependencies ++= List(
+    "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion,
+    "io.grpc" % "grpc-services" % "1.53.0"
+  ))
   .dependsOn(protobuf)
 
 lazy val root = (project in file("."))
