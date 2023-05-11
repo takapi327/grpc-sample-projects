@@ -1,6 +1,5 @@
 
 import io.grpc.*
-//import io.grpc.netty.NettyChannelBuilder
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder
 
 import cats.effect.*
