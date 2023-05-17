@@ -1,6 +1,7 @@
 import com.amazonaws.regions.{ Region, Regions }
 
 import ReleaseTransformations.*
+import com.typesafe.sbt.packager.docker.*
 
 ThisBuild / organization := "io.github.takapi327"
 ThisBuild / scalaVersion := "3.2.2"
@@ -28,6 +29,22 @@ lazy val server = (project in file("server"))
     dockerBaseImage             := "amazoncorretto:11",
     Docker / dockerExposedPorts := Seq(9000, 9000),
     Docker / daemonUser         := "daemon",
+    dockerCommands ++= Seq(
+      ExecCmd(
+        "RUN",
+        "GRPC_HEALTH_PROBE_VERSION=v0.3.1",
+        "wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64",
+        "chmod",
+        "+x",
+        "/bin/grpc_health_probe"
+      ),
+      ExecCmd(
+        "COPY",
+        "--from=build",
+        "/bin/grpc_health_probe",
+        "/bin/grpc_health_probe"
+      )
+    ),
 
     Ecr / region           :=  Region.getRegion(Regions.AP_NORTHEAST_1),
     Ecr / repositoryName   := "jvm-microservice-server",
