@@ -42,7 +42,7 @@ object Main extends IOApp:
     HealthFs2Grpc.bindServiceResource[IO](new HealthFs2GrpcImpl())
 
   private def runService(services: ServerServiceDefinition*): IO[Nothing] = NettyServerBuilder
-    .forPort(9999)
+    .forPort(9000)
     .addServices(services.asJava)
     .resource[IO]
     .evalMap(server => IO(server.start()))
