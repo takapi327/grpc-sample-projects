@@ -24,7 +24,7 @@ lazy val server = (project in file("server"))
     "io.grpc" % "grpc-services" % "1.53.0"
   ))
   .settings(
-    Docker / maintainer         := "t.takapi0327+infra-functional-scala3-api-server@gmail.com",
+    Docker / maintainer         := "takahiko.tominaga+aws_takapi327_product_a@nextbeat.net",
     dockerBaseImage             := "amazoncorretto:11",
     Docker / dockerExposedPorts := Seq(9000, 9000),
     Docker / daemonUser         := "daemon",
