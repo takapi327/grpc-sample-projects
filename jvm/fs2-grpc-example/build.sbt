@@ -1,4 +1,7 @@
-ThisBuild / version      := "1.0.0"
+import com.amazonaws.regions.{ Region, Regions }
+
+import ReleaseTransformations._
+
 ThisBuild / organization := "io.github.takapi327"
 ThisBuild / scalaVersion := "3.2.2"
 ThisBuild / startYear    := Some(2023)
@@ -20,7 +23,32 @@ lazy val server = (project in file("server"))
     "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion,
     "io.grpc" % "grpc-services" % "1.53.0"
   ))
+  .settings(
+    Docker / maintainer         := "t.takapi0327+infra-functional-scala3-api-server@gmail.com",
+    dockerBaseImage             := "amazoncorretto:11",
+    Docker / dockerExposedPorts := Seq(9000, 9000),
+    Docker / daemonUser         := "daemon",
+
+    Ecr / region           :=  Region.getRegion(Regions.AP_NORTHEAST_1),
+    Ecr / repositoryName   := "jvm-microservice-server",
+    Ecr / repositoryTags   ++= Seq(version.value),
+    Ecr / localDockerImage :=  (Docker / packageName).value + ":" + (Docker / version).value,
+
+    releaseVersionBump := sbtrelease.Version.Bump.Bugfix,
+
+    releaseProcess := {
+      Seq[ReleaseStep](
+        runClean,
+        ReleaseStep(state => Project.extract(state).runTask(Docker / publishLocal, state)._1),
+        ReleaseStep(state => Project.extract(state).runTask(Ecr / login, state)._1),
+        ReleaseStep(state => Project.extract(state).runTask(Ecr / push, state)._1),
+      )
+    }
+  )
   .dependsOn(protobuf)
+  .enablePlugins(JavaServerAppPackaging)
+  .enablePlugins(DockerPlugin)
+  .enablePlugins(EcrPlugin)
 
 lazy val root = (project in file("."))
   .settings(publish / skip := true)
