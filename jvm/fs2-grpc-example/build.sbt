@@ -1,6 +1,6 @@
 import com.amazonaws.regions.{ Region, Regions }
 
-import ReleaseTransformations._
+import ReleaseTransformations.*
 
 ThisBuild / organization := "io.github.takapi327"
 ThisBuild / scalaVersion := "3.2.2"
