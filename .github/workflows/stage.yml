@@ -30,13 +30,13 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: 'arn:aws:iam::573320908463:role/deploy-github-actions'
           aws-region:     ap-northeast-1
+          role-to-assume: 'arn:aws:iam::573320908463:role/deploy-github-actions'
 
       - name: Run sbt release
         env:
           GITHUB_USER:  ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cd jvm/fs2-grpc-example
-          sbt "release with-defaults"
+        working-directory: jvm/fs2-grpc-example
+        run:
+          sbt "project server" "release with-defaults"
