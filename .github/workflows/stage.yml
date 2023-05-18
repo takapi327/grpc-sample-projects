@@ -37,4 +37,6 @@ jobs:
         env:
           GITHUB_USER:  ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: sbt "release with-defaults"
+        run: |
+          cd jvm/fs2-grpc-example
+          sbt "release with-defaults"
