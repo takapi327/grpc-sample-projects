@@ -32,7 +32,9 @@ lazy val server = (project in file("server"))
     dockerCommands ++= Seq(
       ExecCmd(
         "RUN",
-        "wget /bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.1/grpc_health_probe-linux-amd64",
+        "wget",
+        "/bin/grpc_health_probe",
+        "https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.1/grpc_health_probe-linux-amd64",
         "chmod",
         "+x",
         "/bin/grpc_health_probe"
