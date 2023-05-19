@@ -39,4 +39,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: jvm/fs2-grpc-example
         run:
-          sbt "project server" "release with-defaults"
+          sbt ++3.2.2 "project server" "release with-defaults"
