@@ -37,8 +37,9 @@ lazy val server = (project in file("server"))
         "+x",
         "/bin/grpc_health_probe"
       ),
-      ExecCmd(
-        "COPY --from=build /bin/grpc_health_probe /bin/grpc_health_probe",
+      Cmd(
+        "COPY",
+        "--from=build /bin/grpc_health_probe /bin/grpc_health_probe"
       )
     ),
 
