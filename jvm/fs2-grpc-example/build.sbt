@@ -18,6 +18,22 @@ lazy val client = (project in file("client"))
   ))
   .dependsOn(protobuf)
 
+lazy val additionalCommands = Seq(
+  ExecCmd(
+    "RUN",
+    "wget",
+    "/bin/grpc_health_probe",
+    "https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.1/grpc_health_probe-linux-amd64",
+    "chmod",
+    "+x",
+    "/bin/grpc_health_probe"
+  ),
+  Cmd(
+    "COPY",
+    "--from=build /bin/grpc_health_probe /bin/grpc_health_probe"
+  )
+)
+
 lazy val server = (project in file("server"))
   .settings(name := "server")
   .settings(libraryDependencies ++= List(
@@ -29,26 +45,12 @@ lazy val server = (project in file("server"))
     dockerBaseImage             := "amazoncorretto:11",
     Docker / dockerExposedPorts := Seq(9000, 9000),
     Docker / daemonUser         := "daemon",
-    dockerCommands ++= Seq(
-      ExecCmd(
-        "RUN",
-        "apt-get update",
-        "apt-get install -y wget"
-      ),
-      ExecCmd(
-        "RUN",
-        "wget",
-        "/bin/grpc_health_probe",
-        "https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.1/grpc_health_probe-linux-amd64",
-        "chmod",
-        "+x",
-        "/bin/grpc_health_probe"
-      ),
-      Cmd(
-        "COPY",
-        "--from=build /bin/grpc_health_probe /bin/grpc_health_probe"
-      )
-    ),
+    dockerCommands := {
+      dockerCommands.value.flatMap {
+        case down@Cmd("USER", "daemon") => additionalCommands :+ down
+        case other => Seq(other)
+      }
+    },
 
     Ecr / region           :=  Region.getRegion(Regions.AP_NORTHEAST_1),
     Ecr / repositoryName   := "jvm-microservice-server",
