@@ -23,7 +23,6 @@ lazy val additionalCommands = Seq(
     "RUN",
     "yum",
     "install",
-    "-y",
     "wget",
     "&&",
     "rm",
