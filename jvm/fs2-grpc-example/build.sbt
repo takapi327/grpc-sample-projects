@@ -19,11 +19,14 @@ lazy val client = (project in file("client"))
   .dependsOn(protobuf)
 
 lazy val additionalCommands = Seq(
+  Cmd("WORKDIR", "/bin/"),
   ExecCmd(
     "RUN",
     "wget",
-    "/bin/grpc_health_probe",
-    "https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.1/grpc_health_probe-linux-amd64",
+    "https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.1/grpc_health_probe-linux-amd64"
+  ),
+  ExecCmd(
+    "RUN",
     "chmod",
     "+x",
     "/bin/grpc_health_probe"
