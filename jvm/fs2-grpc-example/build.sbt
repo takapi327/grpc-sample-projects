@@ -26,10 +26,10 @@ lazy val additionalCommands = Seq(
     "install",
     "wget"
   ),
-  Cmd("WORKDIR", "/bin/"),
   ExecCmd(
     "RUN",
     "wget",
+    "/bin/grpc_health_probe",
     "https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.1/grpc_health_probe-linux-amd64"
   ),
   ExecCmd(
