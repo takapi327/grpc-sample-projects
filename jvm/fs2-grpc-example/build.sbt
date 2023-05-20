@@ -42,7 +42,7 @@ lazy val additionalCommands = Seq(
   ),
   Cmd(
     "COPY",
-    "--from=build /bin/grpc_health_probe /bin/grpc_health_probe"
+    "--from=stage0 --chown=daemon:root /bin/grpc_health_probe /bin/grpc_health_probe"
   )
 )
 
