@@ -41,8 +41,12 @@ lazy val additionalCommands = Seq(
     "/bin/grpc_health_probe"
   ),
   Cmd(
+    "WORKDIR",
+    "/bin"
+  ),
+  Cmd(
     "COPY",
-    "--from=stage0 /bin/grpc_health_probe /bin/grpc_health_probe"
+    "--from=stage0 /grpc_health_probe /bin/grpc_health_probe"
   )
 )
 
