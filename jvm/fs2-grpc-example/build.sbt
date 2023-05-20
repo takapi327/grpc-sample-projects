@@ -42,7 +42,10 @@ lazy val additionalCommands = Seq(
   ),
   ExecCmd(
     "RUN",
-    "find ./ -name grpc_health_probe"
+    "find",
+    " ./",
+    "-name",
+    "grpc_health_probe"
   ),
   Cmd(
     "COPY",
