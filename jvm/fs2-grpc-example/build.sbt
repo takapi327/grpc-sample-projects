@@ -39,14 +39,6 @@ lazy val additionalCommands = Seq(
     "chmod",
     "+x",
     "/bin/grpc_health_probe"
-  ),
-  Cmd(
-    "WORKDIR",
-    "/bin"
-  ),
-  Cmd(
-    "COPY",
-    "--from=stage0 /grpc_health_probe /bin/grpc_health_probe"
   )
 )
 
