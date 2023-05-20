@@ -40,6 +40,10 @@ lazy val additionalCommands = Seq(
     "+x",
     "/bin/grpc_health_probe"
   ),
+  ExecCmd(
+    "RUN",
+    "find ./ -name grpc_health_probe"
+  ),
   Cmd(
     "COPY",
     "--from=stage0 --chown=daemon:root ./bin/grpc_health_probe /bin/"
