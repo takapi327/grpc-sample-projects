@@ -42,7 +42,7 @@ lazy val additionalCommands = Seq(
   ),
   Cmd(
     "COPY",
-    "--from=stage0 --chown=daemon:root /bin/grpc_health_probe /bin/grpc_health_probe"
+    "--from=stage0 /bin/grpc_health_probe /bin/grpc_health_probe"
   )
 )
 
@@ -59,8 +59,7 @@ lazy val server = (project in file("server"))
     Docker / daemonUser         := "daemon",
     dockerCommands := {
       dockerCommands.value.flatMap {
-        //case down@Cmd("USER", "root") => additionalCommands :+ down
-        case down@Cmd("WORKDIR", "/opt/docker") => additionalCommands :+ down
+        case down@Cmd("USER", "1001:0") => additionalCommands :+ down
         case other => Seq(other)
       }
     },
