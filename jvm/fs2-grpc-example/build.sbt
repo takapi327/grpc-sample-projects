@@ -59,7 +59,8 @@ lazy val server = (project in file("server"))
     Docker / daemonUser         := "daemon",
     dockerCommands := {
       dockerCommands.value.flatMap {
-        case down@Cmd("USER", "root") => additionalCommands :+ down
+        //case down@Cmd("USER", "root") => additionalCommands :+ down
+        case down@Cmd("WORKDIR", "/opt/docker") => additionalCommands :+ down
         case other => Seq(other)
       }
     },
