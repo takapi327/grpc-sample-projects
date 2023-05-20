@@ -21,10 +21,7 @@ lazy val client = (project in file("client"))
 lazy val additionalCommands = Seq(
   ExecCmd(
     "RUN",
-    "apt-get",
-    "update",
-    "&&",
-    "apt-get",
+    "yum",
     "install",
     "-y",
     "wget",
