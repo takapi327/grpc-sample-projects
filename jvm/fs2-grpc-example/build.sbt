@@ -19,6 +19,20 @@ lazy val client = (project in file("client"))
   .dependsOn(protobuf)
 
 lazy val additionalCommands = Seq(
+  ExecCmd(
+    "RUN",
+    "apt-get",
+    "update",
+    "&&",
+    "apt-get",
+    "install",
+    "-y",
+    "wget",
+    "&&",
+    "rm",
+    "-rf",
+    "/var/lib/apt/lists/*"
+  ),
   Cmd("WORKDIR", "/bin/"),
   ExecCmd(
     "RUN",
