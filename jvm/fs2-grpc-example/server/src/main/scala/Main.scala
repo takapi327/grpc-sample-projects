@@ -6,11 +6,11 @@ import io.grpc.protobuf.services.ProtoReflectionService
 import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder
 
 import cats.effect.*
-import fs2.*
+import fs2.Stream
 import fs2.grpc.syntax.all._
 
 import com.example.protos.hello.*
-import com.example.grpc.health.healthCheck.*
+import grpc.health.v1.healthCheck.*
 
 class HealthFs2GrpcImpl extends HealthFs2Grpc[IO, Metadata]:
 
