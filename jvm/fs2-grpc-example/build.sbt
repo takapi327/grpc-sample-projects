@@ -23,11 +23,7 @@ lazy val additionalCommands = Seq(
     "RUN",
     "yum",
     "install",
-    "wget",
-    "&&",
-    "rm",
-    "-rf",
-    "/var/lib/apt/lists/*"
+    "wget"
   ),
   Cmd("WORKDIR", "/bin/"),
   ExecCmd(
