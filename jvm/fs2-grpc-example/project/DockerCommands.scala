@@ -13,10 +13,6 @@ object DockerCommands {
     ),
     ExecCmd(
       "RUN",
-      "export GOPATH=/usr/local"
-    ),
-    ExecCmd(
-      "RUN",
       "go",
       "install",
       "github.com/fullstorydev/grpcurl/cmd/grpcurl"
