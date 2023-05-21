@@ -32,13 +32,14 @@ object Main extends ResourceApp.Forever:
       channel <- managedChannelResource
       client <- GreeterFs2Grpc.stubResource[IO](channel)
       _ <- EmberServerBuilder.default[IO]
+        .withHost(host"0.0.0.0")
         .withPort(port"9000")
         .withHttpApp(HttpRoutes.of[IO] {
           case GET -> Root / "healthcheck" => Ok("Healthcheck Ok")
           case GET -> Root =>
             for
               response <- client.sayHello(HelloRequest.of("takapi"), new Metadata())
-              result <- Ok(response.message)
+              result <- Ok("response.message")
             yield result
         }.orNotFound)
         .build
