@@ -3,6 +3,8 @@ import com.amazonaws.regions.{ Region, Regions }
 import ReleaseTransformations.*
 import com.typesafe.sbt.packager.docker.*
 
+import Dependencies.*
+
 ThisBuild / organization := "io.github.takapi327"
 ThisBuild / scalaVersion := "3.2.2"
 ThisBuild / startYear    := Some(2023)
@@ -49,11 +51,9 @@ lazy val client = (project in file("client"))
   .settings(name := "client")
   .settings(commonSettings)
   .settings(libraryDependencies ++= List(
-    "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion,
-    "ch.qos.logback" % "logback-classic" % "1.4.6",
-    "org.http4s" %% "http4s-dsl" % "0.23.18",
-    "org.http4s" %% "http4s-ember-server" % "0.23.18",
-  ))
+    grpcNetty,
+    logback,
+  ) ++ http4s)
   .settings(
     Compile / resourceDirectory := baseDirectory(_ / "conf").value,
     Universal / mappings ++= Seq(
@@ -120,8 +120,8 @@ lazy val additionalCommands = Seq(
 lazy val server = (project in file("server"))
   .settings(name := "server")
   .settings(libraryDependencies ++= List(
-    "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion,
-    "io.grpc" % "grpc-services" % "1.53.0"
+    grpcNetty,
+    grpcServices
   ))
   .settings(
     Docker / maintainer         := "takahiko.tominaga+aws_takapi327_product_a@nextbeat.net",
