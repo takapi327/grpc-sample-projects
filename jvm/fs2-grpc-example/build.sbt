@@ -14,7 +14,10 @@ lazy val protobuf = (project in file("protobuf"))
 lazy val client = (project in file("client"))
   .settings(name := "client")
   .settings(libraryDependencies ++= List(
-    "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion
+    "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion,
+    "ch.qos.logback" % "logback-classic" % "1.4.6",
+    "org.http4s" %% "http4s-dsl" % "0.23.18",
+    "org.http4s" %% "http4s-ember-server" % "0.23.18",
   ))
   .dependsOn(protobuf)
 
