@@ -28,6 +28,8 @@ jobs:
 
       - name: Deploy JVM Server
         uses: ./.github/actions/deploy/jvm/server
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   jvm-client:
     runs-on: ubuntu-latest
@@ -42,3 +44,5 @@ jobs:
 
       - name: Deploy JVM Client
         uses: ./.github/actions/deploy/jvm/client
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
