@@ -30,6 +30,21 @@ lazy val protobuf = (project in file("protobuf"))
   .settings(name := "protobuf")
   .enablePlugins(Fs2Grpc)
 
+lazy val additionalGrpcCurlCommands = Seq(
+  ExecCmd(
+    "RUN",
+    "/bin/bash",
+    "-c",
+    "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)",
+  ),
+  ExecCmd(
+    "RUN",
+    "brew",
+    "install",
+    "grpcurl"
+  )
+)
+
 lazy val client = (project in file("client"))
   .settings(name := "client")
   .settings(commonSettings)
@@ -50,6 +65,12 @@ lazy val client = (project in file("client"))
     dockerBaseImage := "amazoncorretto:11",
     Docker / dockerExposedPorts := Seq(9000, 9000),
     Docker / daemonUser := "daemon",
+    dockerCommands := {
+      dockerCommands.value.flatMap {
+        case down@Cmd("USER", "1001:0") => additionalGrpcCurlCommands :+ down
+        case other => Seq(other)
+      }
+    },
 
     Ecr / region := Region.getRegion(Regions.AP_NORTHEAST_1),
     Ecr / repositoryName := "jvm-microservice-server",
