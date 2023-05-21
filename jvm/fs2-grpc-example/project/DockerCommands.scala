@@ -36,7 +36,7 @@ object DockerCommands {
       "&&",
       "sed -i '/localpkg_gpgcheck=1/d' /etc/dnf/dnf.conf",
     ),
-    Cmd("ENV", "C.UTF-8"),
+    Cmd("ENV", "LANG", "C.UTF-8"),
     Cmd("ENV", "JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto"),
     ExecCmd("RUN", "/bin/bash", "-c", "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"),
     ExecCmd("RUN", "brew", "install", "grpcurl")
