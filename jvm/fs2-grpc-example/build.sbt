@@ -32,21 +32,6 @@ lazy val protobuf = (project in file("protobuf"))
   .settings(name := "protobuf")
   .enablePlugins(Fs2Grpc)
 
-lazy val additionalGrpcCurlCommands = Seq(
-  ExecCmd(
-    "RUN",
-    "/bin/bash",
-    "-c",
-    "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)",
-  ),
-  ExecCmd(
-    "RUN",
-    "brew",
-    "install",
-    "grpcurl"
-  )
-)
-
 lazy val client = (project in file("client"))
   .settings(name := "client")
   .settings(commonSettings)
@@ -62,12 +47,13 @@ lazy val client = (project in file("client"))
     ),
 
     Docker / maintainer := "takahiko.tominaga+aws_takapi327_product_b@nextbeat.net",
-    dockerBaseImage := "amazoncorretto:11",
+    //dockerBaseImage := "amazoncorretto:11",
+    dockerBaseImage := "amazonlinux:2023",
     Docker / dockerExposedPorts := Seq(9000, 9000),
     Docker / daemonUser := "daemon",
     dockerCommands := {
       dockerCommands.value.flatMap {
-        case down@Cmd("USER", "1001:0") => additionalGrpcCurlCommands :+ down
+        case down@Cmd("USER", "1001:0") => DockerCommands.grpcCurl :+ down
         case other => Seq(other)
       }
     },
@@ -93,30 +79,6 @@ lazy val client = (project in file("client"))
   .enablePlugins(DockerPlugin)
   .enablePlugins(EcrPlugin)
 
-lazy val additionalCommands = Seq(
-  ExecCmd(
-    "RUN",
-    "yum",
-    "-y",
-    "install",
-    "wget"
-  ),
-  ExecCmd(
-    "RUN",
-    "wget",
-    "-q",
-    "-O",
-    "/bin/grpc_health_probe",
-    "https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.1/grpc_health_probe-linux-amd64"
-  ),
-  ExecCmd(
-    "RUN",
-    "chmod",
-    "+x",
-    "/bin/grpc_health_probe"
-  )
-)
-
 lazy val server = (project in file("server"))
   .settings(name := "server")
   .settings(libraryDependencies ++= List(
@@ -130,7 +92,7 @@ lazy val server = (project in file("server"))
     Docker / daemonUser         := "daemon",
     dockerCommands := {
       dockerCommands.value.flatMap {
-        case down@Cmd("USER", "1001:0") => additionalCommands :+ down
+        case down@Cmd("USER", "1001:0") => DockerCommands.grpcHealthProbe :+ down
         case other => Seq(other)
       }
     },
