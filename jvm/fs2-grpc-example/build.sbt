@@ -19,7 +19,32 @@ lazy val client = (project in file("client"))
     "org.http4s" %% "http4s-dsl" % "0.23.18",
     "org.http4s" %% "http4s-ember-server" % "0.23.18",
   ))
+  .settings(
+    Docker / maintainer := "takahiko.tominaga+aws_takapi327_product_b@nextbeat.net",
+    dockerBaseImage := "amazoncorretto:11",
+    Docker / dockerExposedPorts := Seq(9000, 9000),
+    Docker / daemonUser := "daemon",
+
+    Ecr / region := Region.getRegion(Regions.AP_NORTHEAST_1),
+    Ecr / repositoryName := "jvm-microservice-server",
+    Ecr / repositoryTags ++= Seq(version.value),
+    Ecr / localDockerImage := (Docker / packageName).value + ":" + (Docker / version).value,
+
+    releaseVersionBump := sbtrelease.Version.Bump.Bugfix,
+
+    releaseProcess := {
+      Seq[ReleaseStep](
+        runClean,
+        ReleaseStep(state => Project.extract(state).runTask(Docker / publishLocal, state)._1),
+        ReleaseStep(state => Project.extract(state).runTask(Ecr / login, state)._1),
+        ReleaseStep(state => Project.extract(state).runTask(Ecr / push, state)._1),
+      )
+    }
+  )
   .dependsOn(protobuf)
+  .enablePlugins(JavaServerAppPackaging)
+  .enablePlugins(DockerPlugin)
+  .enablePlugins(EcrPlugin)
 
 lazy val additionalCommands = Seq(
   ExecCmd(
