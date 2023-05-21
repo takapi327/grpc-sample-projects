@@ -15,7 +15,7 @@ object DockerCommands {
       "RUN",
       "go",
       "install",
-      "github.com/fullstorydev/grpcurl/cmd/grpcurl"
+      "github.com/fullstorydev/grpcurl/cmd/grpcurl@latest"
     )
   )
 
