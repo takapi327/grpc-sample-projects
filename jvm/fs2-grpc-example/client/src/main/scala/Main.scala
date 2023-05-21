@@ -39,7 +39,7 @@ object Main extends ResourceApp.Forever:
           case GET -> Root =>
             for
               response <- client.sayHello(HelloRequest.of("takapi"), new Metadata())
-              result <- Ok("response.message")
+              result <- Ok(response.message)
             yield result
         }.orNotFound)
         .build
