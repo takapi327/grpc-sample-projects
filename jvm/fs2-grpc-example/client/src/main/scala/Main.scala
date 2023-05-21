@@ -18,7 +18,7 @@ import com.example.protos.hello.*
 
 val managedChannelResource: Resource[IO, ManagedChannel] =
   NettyChannelBuilder
-    .forAddress("https://product-a-service-0efefbf6dc44aa7b4.7d67968.vpc-lattice-svcs.ap-northeast-1.on.aws", 443)
+    .forAddress("product-a-service-0efefbf6dc44aa7b4.7d67968.vpc-lattice-svcs.ap-northeast-1.on.aws", 443)
     .usePlaintext()
     .resource[IO]
 
