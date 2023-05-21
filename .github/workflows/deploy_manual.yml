@@ -1,0 +1,44 @@
+name: Deploy Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        type: choice
+        description: Deploy Target
+        options:
+          - jvm-server
+          - jvm-client
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  jvm-server:
+    runs-on: ubuntu-latest
+
+    if: github.event.inputs.target == 'jvm-server'
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Deploy JVM Server
+        uses: ./.github/actions/deploy/jvm/server
+
+  jvm-client:
+    runs-on: ubuntu-latest
+
+    if: github.event.inputs.target == 'jvm-client'
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Deploy JVM Client
+        uses: ./.github/actions/deploy/jvm/client
