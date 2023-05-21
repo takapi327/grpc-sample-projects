@@ -7,12 +7,32 @@ ThisBuild / organization := "io.github.takapi327"
 ThisBuild / scalaVersion := "3.2.2"
 ThisBuild / startYear    := Some(2023)
 
+lazy val commonSettings = Seq(
+  run / fork := true,
+
+  javaOptions ++= Seq(
+    "-Dconfig.file=conf/application.conf",
+    "-Dlogback.configurationFile=conf/logback.xml"
+  ),
+
+  scalacOptions ++= Seq(
+    "-Xfatal-warnings",
+    "-deprecation",
+    "-feature",
+    "-unchecked",
+    "-language:existentials",
+    "-language:higherKinds",
+    "-language:implicitConversions"
+  )
+)
+
 lazy val protobuf = (project in file("protobuf"))
   .settings(name := "protobuf")
   .enablePlugins(Fs2Grpc)
 
 lazy val client = (project in file("client"))
   .settings(name := "client")
+  .settings(commonSettings)
   .settings(libraryDependencies ++= List(
     "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion,
     "ch.qos.logback" % "logback-classic" % "1.4.6",
@@ -20,6 +40,12 @@ lazy val client = (project in file("client"))
     "org.http4s" %% "http4s-ember-server" % "0.23.18",
   ))
   .settings(
+    Compile / resourceDirectory := baseDirectory(_ / "conf").value,
+    Universal / mappings ++= Seq(
+      ((Compile / resourceDirectory).value / "application.conf") -> "conf/application.conf",
+      ((Compile / resourceDirectory).value / "logback.xml") -> "conf/logback.xml"
+    ),
+
     Docker / maintainer := "takahiko.tominaga+aws_takapi327_product_b@nextbeat.net",
     dockerBaseImage := "amazoncorretto:11",
     Docker / dockerExposedPorts := Seq(9000, 9000),
