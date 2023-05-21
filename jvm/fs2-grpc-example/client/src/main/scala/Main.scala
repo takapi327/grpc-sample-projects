@@ -19,7 +19,7 @@ import com.example.protos.hello.*
 val managedChannelResource: Resource[IO, ManagedChannel] =
   NettyChannelBuilder
     .forAddress("product-a-service-0efefbf6dc44aa7b4.7d67968.vpc-lattice-svcs.ap-northeast-1.on.aws", 443)
-    .usePlaintext()
+    //.usePlaintext()
     .resource[IO]
 
 def runProgram(stub: GreeterFs2Grpc[IO, Metadata]): IO[Unit] =

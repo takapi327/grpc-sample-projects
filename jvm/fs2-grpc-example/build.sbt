@@ -47,8 +47,7 @@ lazy val client = (project in file("client"))
     ),
 
     Docker / maintainer := "takahiko.tominaga+aws_takapi327_product_b@nextbeat.net",
-    //dockerBaseImage := "amazoncorretto:11",
-    dockerBaseImage := "amazonlinux:2023",
+    dockerBaseImage := "amazoncorretto:11",
     Docker / dockerExposedPorts := Seq(9000, 9000),
     Docker / daemonUser := "daemon",
     dockerCommands := {
