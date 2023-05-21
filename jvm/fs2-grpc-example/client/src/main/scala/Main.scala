@@ -18,7 +18,7 @@ import com.example.protos.hello.*
 
 val managedChannelResource: Resource[IO, ManagedChannel] =
   NettyChannelBuilder
-    .forAddress("127.0.0.1", 9000)
+    .forAddress("product-a-service-0efefbf6dc44aa7b4.7d67968.vpc-lattice-svcs.ap-northeast-1.on.aws", 9000)
     .usePlaintext()
     .resource[IO]
 
@@ -32,7 +32,7 @@ object Main extends ResourceApp.Forever:
       channel <- managedChannelResource
       client <- GreeterFs2Grpc.stubResource[IO](channel)
       _ <- EmberServerBuilder.default[IO]
-        .withPort(port"5555")
+        .withPort(port"9000")
         .withHttpApp(HttpRoutes.of[IO] {
           case GET -> Root / "healthcheck" => Ok("Healthcheck Ok")
           case GET -> Root =>
