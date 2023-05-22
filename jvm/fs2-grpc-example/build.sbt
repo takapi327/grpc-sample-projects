@@ -13,8 +13,8 @@ lazy val commonSettings = Seq(
   run / fork := true,
 
   javaOptions ++= Seq(
-    "-Dconfig.file=conf/application.conf",
-    "-Dlogback.configurationFile=conf/logback.xml"
+    "-Dconfig.file=conf/env.dev/application.conf",
+    "-Dlogback.configurationFile=conf/env.dev/logback.xml"
   ),
 
   scalacOptions ++= Seq(
@@ -38,12 +38,13 @@ lazy val client = (project in file("client"))
   .settings(libraryDependencies ++= List(
     grpcNetty,
     logback,
+    typesafeConfig
   ) ++ http4s)
   .settings(
     Compile / resourceDirectory := baseDirectory(_ / "conf").value,
     Universal / mappings ++= Seq(
-      ((Compile / resourceDirectory).value / "application.conf") -> "conf/application.conf",
-      ((Compile / resourceDirectory).value / "logback.xml") -> "conf/logback.xml"
+      ((Compile / resourceDirectory).value / "env.stg/application.conf") -> "conf/env.stg/application.conf",
+      ((Compile / resourceDirectory).value / "env.stg/logback.xml") -> "conf/env.stg/logback.xml"
     ),
 
     Docker / maintainer := "takahiko.tominaga+aws_takapi327_product_b@nextbeat.net",
