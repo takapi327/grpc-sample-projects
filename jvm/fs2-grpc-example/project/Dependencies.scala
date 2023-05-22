@@ -11,4 +11,6 @@ object Dependencies {
     "http4s-dsl",
     "http4s-ember-server"
   ).map("org.http4s" %% _ % "0.23.18")
+
+  val typesafeConfig = "com.typesafe" % "config" % "1.4.2"
 }
