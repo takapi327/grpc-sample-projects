@@ -12,6 +12,7 @@
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
     "@sveltejs/kit": "^1.5.0",
+    "grpc-tools": "^1.12.4",
     "grpc_tools_node_protoc_ts": "^5.3.3",
     "svelte": "^3.54.0",
     "svelte-check": "^3.0.1",
@@ -23,7 +24,6 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.8.14",
     "@grpc/proto-loader": "^0.7.7",
-    "express": "^4.18.2",
-    "grpc-tools": "^1.12.4"
+    "express": "^4.18.2"
   }
 }
