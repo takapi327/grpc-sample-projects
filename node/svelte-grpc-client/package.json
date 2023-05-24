@@ -16,6 +16,7 @@
     "grpc_tools_node_protoc_ts": "^5.3.3",
     "svelte": "^3.54.0",
     "svelte-check": "^3.0.1",
+    "ts-proto": "^1.148.0",
     "tslib": "^2.4.1",
     "typescript": "^5.0.0",
     "vite": "^4.3.0"
