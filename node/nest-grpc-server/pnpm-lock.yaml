@@ -1,6 +1,9 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@common/protobuf':
+    specifier: file:../protobuf/common-protobuf-1.0.0.tgz
+    version: file:../protobuf/common-protobuf-1.0.0.tgz
   '@grpc/grpc-js':
     specifier: ^1.8.14
     version: 1.8.14
@@ -5119,3 +5122,12 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  file:../protobuf/common-protobuf-1.0.0.tgz:
+    resolution: {integrity: sha512-hLHbfaFSt1V0M4r8ZMW9pY0mFRcJhH/ABc3VWTOHEkluxJO/Qc/bdh6ndFoW6O6Pv0J3RE0Sg9U+6wGjA6J/RQ==, tarball: file:../protobuf/common-protobuf-1.0.0.tgz}
+    name: '@common/protobuf'
+    version: 1.0.0
+    dependencies:
+      '@grpc/grpc-js': 1.8.14
+      protobufjs: 7.2.3
+    dev: false

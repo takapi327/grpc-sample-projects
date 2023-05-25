@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@common/protobuf": "file:../protobuf/common-protobuf-1.0.0.tgz",
     "@grpc/grpc-js": "^1.8.14",
     "@grpc/proto-loader": "^0.7.7",
     "@nestjs/common": "^9.0.0",
