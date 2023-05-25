@@ -1,7 +1,7 @@
 import { PUBLIC_API_HOST, PUBLIC_API_PORT } from '$env/static/public'
 
 import { credentials } from '@grpc/grpc-js'
-import { GreeterClient, HelloRequest, HelloReply } from '../lib/generated/protobuf/hello'
+import { GreeterClient, HelloRequest, HelloReply } from '@common/protobuf'
 
 export const load = async () => {
   const client = new GreeterClient(

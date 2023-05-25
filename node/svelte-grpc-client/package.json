@@ -22,6 +22,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@common/protobuf": "file:../protobuf/common-protobuf-1.0.0.tgz",
     "@grpc/grpc-js": "^1.8.14",
     "express": "^4.18.2",
     "protobufjs": "^7.2.3"
