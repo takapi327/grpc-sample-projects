@@ -28,5 +28,5 @@ runs:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       working-directory: jvm/fs2-grpc-example
       run:
-        sbt ++3.2.2 "project server" "release with-defaults"
+        sbt "project server" "release with-defaults"
       shell: bash
