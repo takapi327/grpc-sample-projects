@@ -106,6 +106,11 @@ lazy val server = (project in file("server"))
     grpcServices
   ))
   .settings(
+    Compile / resourceDirectory := baseDirectory(_ / "conf").value,
+    Universal / mappings ++= Seq(
+      ((Compile / resourceDirectory).value / "jmx_exporter_conf.yaml") -> "conf/jmx_exporter_conf.yaml"
+    ),
+
     Docker / maintainer         := "takahiko.tominaga+aws_takapi327_product_a@nextbeat.net",
     dockerBaseImage             := "amazoncorretto:11",
     Docker / dockerExposedPorts := Seq(9000, 9000),
