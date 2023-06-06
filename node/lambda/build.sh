@@ -2,6 +2,7 @@
 
 echo remove dir and zip
 rm -rf dist/
+mkdir dist
 
 echo compile ts
 tsc -p tsconfig.json
