@@ -45,6 +45,8 @@ object Main extends ResourceApp.Forever:
   private val httpHost = config.getString("http.host")
   private val hostPort = config.getInt("http.port")
 
+  //given EntityDecoder[IO, Any]
+
   override def run(args: List[String]): Resource[IO, Unit] =
     for
       channel <- managedChannelResource
@@ -62,8 +64,8 @@ object Main extends ResourceApp.Forever:
             yield result
           case GET -> Root / "lambda" =>
             for
-              response <- restClient.expect[LambdaMessage](uri"http://lambda-service-076004daa2c02b209.7d67968.vpc-lattice-svcs.ap-northeast-1.on.aws:80")
-              result <- Ok(response.message)
+              response <- restClient.expect[String](uri"http://lambda-service-076004daa2c02b209.7d67968.vpc-lattice-svcs.ap-northeast-1.on.aws:80")
+              result <- Ok(response)
             yield result
         }.orNotFound)
         .build
