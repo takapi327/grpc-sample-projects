@@ -9,7 +9,9 @@ object Dependencies {
 
   val http4s: Seq[ModuleID] = Seq(
     "http4s-dsl",
-    "http4s-ember-server"
+    "http4s-ember-server",
+    "http4s-ember-client",
+    "http4s-circe"
   ).map("org.http4s" %% _ % "0.23.18")
 
   val typesafeConfig = "com.typesafe" % "config" % "1.4.2"

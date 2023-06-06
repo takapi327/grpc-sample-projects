@@ -10,11 +10,15 @@ import com.typesafe.config.*
 
 import fs2.grpc.syntax.all.*
 
+import io.circe.generic.auto.*
+
 import org.http4s.*
 import org.http4s.dsl.io.*
 import org.http4s.server.{ Router, ServerRequestKeys }
 import org.http4s.implicits.*
 import org.http4s.ember.server.EmberServerBuilder
+import org.http4s.ember.client.EmberClientBuilder
+import org.http4s.circe.*
 
 import com.example.protos.hello.*
 
@@ -32,6 +36,10 @@ val managedChannelResource: Resource[IO, ManagedChannel] =
 def runProgram(stub: GreeterFs2Grpc[IO, Metadata]): IO[Unit] =
   stub.sayHello(HelloRequest.of("takapi"), new Metadata()).flatMap(v => IO.println(v.message))
 
+case class LambdaMessage(message: String)
+object LambdaMessage:
+  given EntityDecoder[IO, LambdaMessage] = jsonOf
+
 object Main extends ResourceApp.Forever:
 
   private val httpHost = config.getString("http.host")
@@ -41,6 +49,7 @@ object Main extends ResourceApp.Forever:
     for
       channel <- managedChannelResource
       client <- GreeterFs2Grpc.stubResource[IO](channel)
+      restClient <- EmberClientBuilder.default[IO].build
       _ <- EmberServerBuilder.default[IO]
         .withHost(Host.fromString(httpHost).getOrElse(host"0.0.0.0"))
         .withPort(Port.fromInt(hostPort).getOrElse(port"9000"))
@@ -49,6 +58,11 @@ object Main extends ResourceApp.Forever:
           case GET -> Root =>
             for
               response <- client.sayHello(HelloRequest.of("takapi"), new Metadata())
+              result <- Ok(response.message)
+            yield result
+          case GET -> Root / "lambda" =>
+            for
+              response <- restClient.expect[LambdaMessage](uri"http://lambda-service-076004daa2c02b209.7d67968.vpc-lattice-svcs.ap-northeast-1.on.aws:80")
               result <- Ok(response.message)
             yield result
         }.orNotFound)

@@ -38,7 +38,8 @@ lazy val client = (project in file("client"))
   .settings(libraryDependencies ++= List(
     grpcNetty,
     logback,
-    typesafeConfig
+    typesafeConfig,
+    "io.circe" %% "circe-generic" % "0.14.5"
   ) ++ http4s)
   .settings(
     Compile / resourceDirectory := baseDirectory(_ / "conf").value,
