@@ -5,7 +5,7 @@ rm -rf dist/
 mkdir dist
 
 echo compile ts
-tsc -p tsconfig.json
+pnpm tsc -p tsconfig.json
 
 echo copy package.json
 cp -f ./package.json ./dist
