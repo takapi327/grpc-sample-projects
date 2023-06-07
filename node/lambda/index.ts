@@ -1,6 +1,9 @@
 
-exports.handler = (event: any, context: any, callback: any) => {
+exports.handler = async (event: any, context: any, callback: any) => {
   console.log(event)
   console.log(context)
-  callback(null, { message: 'Callback By Lambda' })
+  return {
+    statusCode: 200,
+    body: 'Callback By Lambda'
+  }
 }
