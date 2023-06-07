@@ -45,8 +45,6 @@ object Main extends ResourceApp.Forever:
   private val httpHost = config.getString("http.host")
   private val hostPort = config.getInt("http.port")
 
-  //given EntityDecoder[IO, Any]
-
   override def run(args: List[String]): Resource[IO, Unit] =
     for
       channel <- managedChannelResource
