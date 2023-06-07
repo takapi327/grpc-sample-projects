@@ -12,9 +12,9 @@ import fs2.grpc.syntax.all.*
 
 import org.http4s.*
 import org.http4s.dsl.io.*
-import org.http4s.server.{ Router, ServerRequestKeys }
 import org.http4s.implicits.*
 import org.http4s.ember.server.EmberServerBuilder
+import org.http4s.ember.client.EmberClientBuilder
 
 import com.example.protos.hello.*
 
@@ -41,6 +41,7 @@ object Main extends ResourceApp.Forever:
     for
       channel <- managedChannelResource
       client <- GreeterFs2Grpc.stubResource[IO](channel)
+      restClient <- EmberClientBuilder.default[IO].build
       _ <- EmberServerBuilder.default[IO]
         .withHost(Host.fromString(httpHost).getOrElse(host"0.0.0.0"))
         .withPort(Port.fromInt(hostPort).getOrElse(port"9000"))
@@ -50,6 +51,11 @@ object Main extends ResourceApp.Forever:
             for
               response <- client.sayHello(HelloRequest.of("takapi"), new Metadata())
               result <- Ok(response.message)
+            yield result
+          case GET -> Root / "lambda" =>
+            for
+              response <- restClient.expect[String](uri"http://lambda-service-076004daa2c02b209.7d67968.vpc-lattice-svcs.ap-northeast-1.on.aws:80")
+              result <- Ok(response)
             yield result
         }.orNotFound)
         .build
