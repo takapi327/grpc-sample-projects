@@ -15,4 +15,6 @@ object Dependencies {
   ).map("org.http4s" %% _ % "0.23.18")
 
   val typesafeConfig = "com.typesafe" % "config" % "1.4.2"
+  
+  val circe = "io.circe" %% "circe-generic" % "0.14.5"
 }

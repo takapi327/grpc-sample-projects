@@ -10,15 +10,11 @@ import com.typesafe.config.*
 
 import fs2.grpc.syntax.all.*
 
-import io.circe.generic.auto.*
-
 import org.http4s.*
 import org.http4s.dsl.io.*
-import org.http4s.server.{ Router, ServerRequestKeys }
 import org.http4s.implicits.*
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.ember.client.EmberClientBuilder
-import org.http4s.circe.*
 
 import com.example.protos.hello.*
 
@@ -35,10 +31,6 @@ val managedChannelResource: Resource[IO, ManagedChannel] =
 
 def runProgram(stub: GreeterFs2Grpc[IO, Metadata]): IO[Unit] =
   stub.sayHello(HelloRequest.of("takapi"), new Metadata()).flatMap(v => IO.println(v.message))
-
-case class LambdaMessage(message: String)
-object LambdaMessage:
-  given EntityDecoder[IO, LambdaMessage] = jsonOf
 
 object Main extends ResourceApp.Forever:
 

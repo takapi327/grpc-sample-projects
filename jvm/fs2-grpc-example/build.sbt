@@ -19,6 +19,7 @@ lazy val commonSettings = Seq(
 
   scalacOptions ++= Seq(
     "-Xfatal-warnings",
+    "-Wunused:all",
     "-deprecation",
     "-feature",
     "-unchecked",
@@ -39,7 +40,7 @@ lazy val client = (project in file("client"))
     grpcNetty,
     logback,
     typesafeConfig,
-    "io.circe" %% "circe-generic" % "0.14.5"
+    circe
   ) ++ http4s)
   .settings(
     Compile / resourceDirectory := baseDirectory(_ / "conf").value,
