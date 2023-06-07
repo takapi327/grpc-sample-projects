@@ -80,26 +80,6 @@ lazy val client = (project in file("client"))
   .enablePlugins(DockerPlugin)
   .enablePlugins(EcrPlugin)
 
-lazy val jmxExporterJavaAgent = {
-
-  val port = 9090
-  val conf = "conf/jmx_exporter_conf.yaml"
-
-  val arguments = s"$port:$conf"
-
-  val agent = JavaAgent(
-    "io.prometheus.jmx" % "jmx_prometheus_javaagent" % "0.18.0" % "compile;test",
-    arguments = arguments
-  )
-
-  println(s"jmx_exporter args: '${arguments}'")
-  println(s"Adding JavaAgent: ${agent}")
-  println(s"JavaAgent.arguments = '${agent.arguments}'")
-  println(s"jmx exporter metrics should be available at http://localhost:${port}/metrics")
-
-  agent
-}
-
 lazy val server = (project in file("server"))
   .settings(name := "server")
   .settings(libraryDependencies ++= List(
@@ -107,11 +87,6 @@ lazy val server = (project in file("server"))
     grpcServices
   ))
   .settings(
-    Compile / resourceDirectory := baseDirectory(_ / "conf").value,
-    Universal / mappings ++= Seq(
-      ((Compile / resourceDirectory).value / "jmx_exporter_conf.yaml") -> "conf/jmx_exporter_conf.yaml"
-    ),
-
     Docker / maintainer         := "takahiko.tominaga+aws_takapi327_product_a@nextbeat.net",
     dockerBaseImage             := "amazoncorretto:11",
     Docker / dockerExposedPorts := Seq(9000, 9000),
@@ -137,15 +112,12 @@ lazy val server = (project in file("server"))
         ReleaseStep(state => Project.extract(state).runTask(Ecr / login, state)._1),
         ReleaseStep(state => Project.extract(state).runTask(Ecr / push, state)._1),
       )
-    },
-
-    javaAgents ++= Seq(jmxExporterJavaAgent)
+    }
   )
   .dependsOn(protobuf)
   .enablePlugins(JavaServerAppPackaging)
   .enablePlugins(DockerPlugin)
   .enablePlugins(EcrPlugin)
-  .enablePlugins(JavaAgent)
 
 lazy val root = (project in file("."))
   .settings(publish / skip := true)
